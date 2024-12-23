@@ -10,4 +10,9 @@ class UserRepository
     {
         return User::create($data);
     }
+
+    public function emailExists(string $email): bool
+    {
+        return User::where('email', $email)->exists();
+    }
 }
