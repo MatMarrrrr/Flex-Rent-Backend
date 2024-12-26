@@ -2,11 +2,12 @@
 
 namespace App\Services;
 
+use App\Contracts\Services\ImgurServiceInterface;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\UploadedFile;
 use Exception;
 
-class ImgurService
+class ImgurService implements ImgurServiceInterface
 {
     public function uploadImage(UploadedFile $image): array
     {

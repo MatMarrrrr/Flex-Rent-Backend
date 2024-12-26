@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Contracts\Services\ImgurServiceInterface;
+use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
 use App\Repositories\UserRepository;
 use App\Services\ImgurService;
 use Illuminate\Http\JsonResponse;
 use \Illuminate\Http\UploadedFile;
 
-class UserService
+class UserService implements UserServiceInterface
 {
-    private UserRepository $userRepository;
-    private ImgurService $imgurService;
+    private UserRepositoryInterface $userRepository;
+    private ImgurServiceInterface $imgurService;
 
-    public function __construct(UserRepository $userRepository, ImgurService $imgurService)
+    public function __construct(UserRepositoryInterface $userRepository, ImgurServiceInterface $imgurService)
     {
         $this->userRepository = $userRepository;
         $this->imgurService = $imgurService;

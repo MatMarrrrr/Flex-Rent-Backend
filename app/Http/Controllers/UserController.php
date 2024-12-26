@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
+use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\CheckEmailRequest;
 use App\Http\Requests\UserRequest;
@@ -10,9 +10,9 @@ use App\Http\Requests\ProfileImageRequest;
 
 class UserController extends Controller
 {
-    private UserService $userService;
+    private UserServiceInterface $userService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserServiceInterface $userService)
     {
         $this->userService = $userService;
     }

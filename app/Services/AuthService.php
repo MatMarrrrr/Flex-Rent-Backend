@@ -2,14 +2,16 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\UserRepositoryInterface;
+use App\Contracts\Services\AuthServiceInterface;
 use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 
-class AuthService
+class AuthService implements AuthServiceInterface
 {
-    private UserRepository $userRepository;
+    private UserRepositoryInterface $userRepository;
 
-    public function __construct(UserRepository $userRepository)
+    public function __construct(UserRepositoryInterface $userRepository)
     {
         $this->userRepository = $userRepository;
     }
