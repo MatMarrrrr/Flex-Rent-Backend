@@ -25,5 +25,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'getUser']);
+        Route::patch('/', [UserController::class, 'update']);
+        Route::post('/profile-image', [UserController::class, 'updateProfileImage']);
     });
 });
