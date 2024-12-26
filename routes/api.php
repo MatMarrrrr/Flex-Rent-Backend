@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +22,7 @@ Route::post('/check-email', [UserController::class, 'checkEmail']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/categories', [CategoryController::class, 'index']);
 
     Route::prefix('user')->group(function () {
         Route::get('/', [UserController::class, 'getUser']);
