@@ -2,18 +2,20 @@
 
 namespace App\Services;
 
-use App\Repositories\CategoryRepository;
+use App\Contracts\Services\CategoryServiceInterface;
+use App\Contracts\Repositories\CategoryRepositoryInterface;
+use Illuminate\Support\Collection;
 
-class CategoryService
+class CategoryService implements CategoryServiceInterface
 {
     protected $categoryRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getAllCategories()
+    public function getAllCategories(): Collection
     {
         return $this->categoryRepository->getAll();
     }

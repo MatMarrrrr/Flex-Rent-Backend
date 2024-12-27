@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\CategoryService;
+use App\Contracts\Services\CategoryServiceInterface;
 use Illuminate\Http\JsonResponse;
 
 class CategoryController extends Controller
 {
-    protected $categoryService;
+    private CategoryServiceInterface $categoryService;
 
-    public function __construct(CategoryService $categoryService)
+    public function __construct(CategoryServiceInterface $categoryService)
     {
         $this->categoryService = $categoryService;
     }
