@@ -33,6 +33,7 @@ class LoginRequest extends FormRequest
             'email.email' => 'Podaj poprawny adres e-mail.',
             'password.required' => 'Pole hasło jest wymagane.',
             'password.min' => 'Hasło musi mieć co najmniej 6 znaków.',
+            'password.regex' => 'Hasło musi zawierać co najmniej jedną dużą literę, cyfrę i znak specjalny.',
         ];
     }
 }
