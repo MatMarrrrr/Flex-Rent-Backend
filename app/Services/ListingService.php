@@ -100,6 +100,7 @@ class ListingService implements ListingServiceInterface
     public function searchListings(array $filters): JsonResponse
     {
         $results = $this->listingRepository->search($filters);
+        $results = $this->listingRepository->appendReservedPeriods($results);
 
         return response()->json(['results' => $results], 200);
     }
@@ -111,6 +112,7 @@ class ListingService implements ListingServiceInterface
         if (!$listing) {
             return response()->json(['message' => 'Listing not found'], 404);
         }
+        $listing = $this->listingRepository->appendReservedPeriods($listing);
 
         return response()->json($listing, 200);
     }

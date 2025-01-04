@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Contracts\Repositories\ListingRepositoryInterface;
 use App\Models\Listing;
 use Illuminate\Support\Collection;
+use Carbon\Carbon;
 
 class ListingRepository implements ListingRepositoryInterface
 {
@@ -61,5 +62,33 @@ class ListingRepository implements ListingRepositoryInterface
             return $listing->save();
         }
         return false;
+    }
+
+    public function getReservedPeriods(Listing $listing): array
+    {
+        return $listing->requests()
+            ->whereIn('status', ['waiting', 'accepted', 'confirmed'])
+            ->where('end_date', '>=', Carbon::today())
+            ->get()
+            ->map(function ($request) {
+                return [
+                    'start_date' => $request->start_date,
+                    'end_date' => $request->end_date
+                ];
+            })
+            ->toArray();
+    }
+
+    public function appendReservedPeriods(Listing | Collection $listingOrListings)
+    {
+        if ($listingOrListings instanceof Listing) {
+            $listingOrListings->reservedPeriods = $this->getReservedPeriods($listingOrListings);
+            return $listingOrListings;
+        } elseif ($listingOrListings instanceof Collection) {
+            $listingOrListings->each(function ($listing) {
+                $listing->reservedPeriods = $this->getReservedPeriods($listing);
+            });
+            return $listingOrListings;
+        }
     }
 }

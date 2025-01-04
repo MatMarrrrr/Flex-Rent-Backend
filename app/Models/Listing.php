@@ -42,4 +42,9 @@ class Listing extends Model
     {
         return $this->belongsTo(Category::class, 'category');
     }
+
+    public function requests()
+    {
+        return $this->hasMany(Request::class);
+    }
 }

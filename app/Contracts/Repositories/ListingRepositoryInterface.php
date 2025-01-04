@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Repositories;
 
+use App\Models\Listing;
 use Illuminate\Support\Collection;
 
 interface ListingRepositoryInterface
@@ -13,4 +14,6 @@ interface ListingRepositoryInterface
     public function getByOwner(int $ownerId): Collection;
     public function findByIdAndOwner(int $id, int $ownerId): ?object;
     public function markAsDeleted(int $id): bool;
+    public function getReservedPeriods(Listing $listing): array;
+    public function appendReservedPeriods(Listing | Collection $listingOrListings);
 }
