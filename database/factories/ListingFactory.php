@@ -18,7 +18,7 @@ class ListingFactory extends Factory
         ];
 
         return [
-            'owner_id' => $this->faker->numberBetween(1, 3),
+            'owner_id' => 1,
             'category_id' => $this->faker->numberBetween(1, 10),
             'image' => $this->faker->randomElement($images),
             'name' => $this->faker->words(3, true),

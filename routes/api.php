@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ListingController;
+use App\Http\Controllers\RequestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,5 +41,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/owner', [ListingController::class, 'getByOwner']);
         Route::get('/owner/{listingId}', [ListingController::class, 'findByIdAndOwner']);
         Route::delete('/{listingId}', [ListingController::class, 'delete']);
+    });
+
+    Route::prefix('requests')->group(function () {
+        Route::post('/', [RequestController::class, 'create']);
+        Route::get('/check', [RequestController::class, 'checkExists']);
+        Route::get('/incoming', [RequestController::class, 'getIncoming']);
+        Route::get('/outgoing', [RequestController::class, 'getOutgoing']);
+        Route::patch('{requestId}/accept', [RequestController::class, 'accept']);
+        Route::patch('{requestId}/decline', [RequestController::class, 'decline']);
+        Route::patch('{requestId}/confirm', [RequestController::class, 'confirm']);
+        Route::patch('{requestId}/cancel', [RequestController::class, 'cancel']);
+        Route::patch('{requestId}/update-period', [RequestController::class, 'updatePeriod']);
     });
 });
