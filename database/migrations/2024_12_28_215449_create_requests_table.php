@@ -21,9 +21,9 @@ return new class extends Migration
             $table->date('end_date');
             $table->timestamps();
 
-            $table->foreign('sender_id')->references('id')->on('users');
-            $table->foreign('recipient_id')->references('id')->on('users');
-            $table->foreign('listing_id')->references('id')->on('listings');
+            $table->foreign('sender_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('recipient_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('listing_id')->references('id')->on('listings')->onDelete('cascade');
         });
     }
 

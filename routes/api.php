@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\RequestController;
+use App\Http\Controllers\RentalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,4 +55,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::patch('{requestId}/cancel', [RequestController::class, 'cancel']);
         Route::patch('{requestId}/update-period', [RequestController::class, 'updatePeriod']);
     });
+
+    Route::get('/rentals', [RentalController::class, 'getRentals']);
 });

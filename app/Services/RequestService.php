@@ -2,7 +2,9 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\RentalRepositoryInterface;
 use App\Contracts\Repositories\RequestRepositoryInterface;
+use App\Contracts\Services\RentalServiceInterface;
 use App\Contracts\Services\RequestServiceInterface;
 use App\Enums\RequestStatus;
 use Carbon\Carbon;
@@ -13,10 +15,12 @@ use Symfony\Component\HttpFoundation\Response;
 class RequestService implements RequestServiceInterface
 {
     private RequestRepositoryInterface $requestRepository;
+    private RentalRepositoryInterface $rentalRepository;
 
-    public function __construct(RequestRepositoryInterface $requestRepository)
+    public function __construct(RequestRepositoryInterface $requestRepository, RentalRepositoryInterface $rentalRepository)
     {
         $this->requestRepository = $requestRepository;
+        $this->rentalRepository = $rentalRepository;
     }
 
     public function createRequest(array $data): JsonResponse
@@ -115,7 +119,12 @@ class RequestService implements RequestServiceInterface
         }
 
         $this->requestRepository->updateRequestStatus($requestId, RequestStatus::CONFIRMED->value);
-
+        $this->rentalRepository->create([
+            "listing_id" => $request->listing_id,
+            "request_id" => $request->id,
+            "owner_id" => $request->recipient_id,
+            "borrower_id" => $request->sender_id,
+        ]);
         return response()->json(['message' => 'Request confirmed successfully'], Response::HTTP_OK);
     }
 
@@ -171,8 +180,8 @@ class RequestService implements RequestServiceInterface
             'recipient_id' => $data['recipient_id'],
             'listing_id' => $data['listing_id'],
         ])
-        ->whereIn('status', ['waiting', 'accepted'])
-        ->first();
+            ->whereIn('status', ['waiting', 'accepted'])
+            ->first();
 
         if ($request) {
             return response()->json([
