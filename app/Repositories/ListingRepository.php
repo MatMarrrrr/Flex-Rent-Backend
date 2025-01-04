@@ -82,11 +82,11 @@ class ListingRepository implements ListingRepositoryInterface
     public function appendReservedPeriods(Listing | Collection $listingOrListings)
     {
         if ($listingOrListings instanceof Listing) {
-            $listingOrListings->reservedPeriods = $this->getReservedPeriods($listingOrListings);
+            $listingOrListings->reserved_periods = $this->getReservedPeriods($listingOrListings);
             return $listingOrListings;
         } elseif ($listingOrListings instanceof Collection) {
             $listingOrListings->each(function ($listing) {
-                $listing->reservedPeriods = $this->getReservedPeriods($listing);
+                $listing->reserved_periods = $this->getReservedPeriods($listing);
             });
             return $listingOrListings;
         }
