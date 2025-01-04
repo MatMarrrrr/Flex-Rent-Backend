@@ -20,7 +20,7 @@ use App\Http\Controllers\RequestController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::post('/check-email', [UserController::class, 'checkEmail']);
+Route::match(['head'], '/check-email/{email}', [UserController::class, 'checkEmail']);
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/listings/search', [ListingController::class, 'search']);
 Route::get('/listings/{listingId}', [ListingController::class, 'findById'])->where('listingId', '[1-9][0-9]*');

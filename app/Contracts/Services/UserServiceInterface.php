@@ -19,9 +19,9 @@ interface UserServiceInterface
      * Check if an email already exists in the database.
      *
      * @param string $email
-     * @return bool
+     * @return JsonResponse
      */
-    public function checkIfEmailExists(string $email): bool;
+    public function checkIfEmailExists(string $email): JsonResponse;
 
     /**
      * Update user data with validated input.

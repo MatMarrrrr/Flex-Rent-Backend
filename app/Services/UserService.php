@@ -6,8 +6,7 @@ use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\ImgurServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Contracts\Auth\Authenticatable;
-use App\Repositories\UserRepository;
-use App\Services\ImgurService;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\JsonResponse;
 use \Illuminate\Http\UploadedFile;
 
@@ -27,9 +26,13 @@ class UserService implements UserServiceInterface
         return auth()->user();
     }
 
-    public function checkIfEmailExists(string $email): bool
+    public function checkIfEmailExists(string $email): JsonResponse
     {
-        return $this->userRepository->emailExists($email);
+        $exists = $this->userRepository->emailExists($email);
+        if ($exists) {
+            return response()->json(null, Response::HTTP_OK);
+        }
+        return response()->json(null, Response::HTTP_NOT_FOUND);
     }
 
     public function updateUserData(array $validatedData): JsonResponse

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use App\Http\Requests\CheckEmailRequest;
 use App\Http\Requests\UserRequest;
+use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\ProfileImageRequest;
 
 class UserController extends Controller
@@ -23,18 +23,15 @@ class UserController extends Controller
         return response()->json($user, 200);
     }
 
-    public function checkEmail(CheckEmailRequest $request): JsonResponse
+    public function checkEmail(string $email): JsonResponse
     {
-        $email = $request->input('email');
-        $exists = $this->userService->checkIfEmailExists($email);
-        return response()->json(['exists' => $exists], 200);
+        return $this->userService->checkIfEmailExists($email);
     }
 
     public function update(UserRequest $request): JsonResponse
     {
         $validatedData = $request->validated();
-        $updateResult = $this->userService->updateUserData($validatedData);
-        return $updateResult;
+        return $this->userService->updateUserData($validatedData);
     }
 
     public function updateProfileImage(ProfileImageRequest $request): JsonResponse
