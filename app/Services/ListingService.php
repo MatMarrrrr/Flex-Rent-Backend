@@ -132,7 +132,7 @@ class ListingService implements ListingServiceInterface
     public function getListingsByOwner(int $ownerId): JsonResponse
     {
         $listings = $this->listingRepository->getByOwner($ownerId);
-
+        $listings = $this->listingRepository->appendReservedPeriods($listings);
         return response()->json($listings, 200);
     }
 
