@@ -31,12 +31,12 @@ class Chat extends Model
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id')->select(['id', 'name', 'surname']);
+        return $this->belongsTo(User::class, 'owner_id')->select(['id', 'name', 'surname', 'profile_image']);
     }
 
     public function borrower(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'borrower_id')->select(['id', 'name', 'surname']);
+        return $this->belongsTo(User::class, 'borrower_id')->select(['id', 'name', 'surname',  'profile_image']);
     }
 
     public function request(): BelongsTo
