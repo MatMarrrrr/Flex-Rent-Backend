@@ -8,25 +8,40 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Chat extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'owner_id',
         'borrower_id',
-        'listing_id',
+        'request_id',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'created_at',
+        'updated_at'
     ];
 
     public function owner(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'owner_id');
+        return $this->belongsTo(User::class, 'owner_id')->select(['id', 'name', 'surname']);
     }
 
     public function borrower(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'borrower_id');
+        return $this->belongsTo(User::class, 'borrower_id')->select(['id', 'name', 'surname']);
     }
 
-    public function listing(): BelongsTo
+    public function request(): BelongsTo
     {
-        return $this->belongsTo(Listing::class, 'listing_id');
+        return $this->belongsTo(Request::class, 'request_id');
     }
 
     public function messages(): HasMany

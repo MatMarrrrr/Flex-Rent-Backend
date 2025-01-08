@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RentalController;
@@ -57,4 +58,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
 
     Route::get('/rentals', [RentalController::class, 'getRentals']);
+
+    Route::get('/chats', [ChatController::class, 'getChats']);
 });

@@ -7,20 +7,25 @@ use App\Contracts\Repositories\RequestRepositoryInterface;
 use App\Contracts\Services\RentalServiceInterface;
 use App\Contracts\Services\RequestServiceInterface;
 use App\Enums\RequestStatus;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use App\Models\Request;
+use App\Repositories\ChatRepository;
 use Symfony\Component\HttpFoundation\Response;
 
 class RequestService implements RequestServiceInterface
 {
     private RequestRepositoryInterface $requestRepository;
     private RentalRepositoryInterface $rentalRepository;
+    private ChatRepository $chatRepository;
 
-    public function __construct(RequestRepositoryInterface $requestRepository, RentalRepositoryInterface $rentalRepository)
-    {
+    public function __construct(
+        RequestRepositoryInterface $requestRepository,
+        RentalRepositoryInterface $rentalRepository,
+        ChatRepository $chatRepository
+    ) {
         $this->requestRepository = $requestRepository;
         $this->rentalRepository = $rentalRepository;
+        $this->chatRepository = $chatRepository;
     }
 
     public function createRequest(array $data): JsonResponse
@@ -85,7 +90,11 @@ class RequestService implements RequestServiceInterface
         }
 
         $this->requestRepository->updateRequestStatus($requestId, RequestStatus::ACCEPTED->value);
-
+        $this->chatRepository->create([
+            "owner_id" => $request->recipient_id,
+            "borrower_id" => $request->sender_id,
+            "request_id" => $requestId,
+        ]);
         return response()->json(['message' => 'Request accepted successfully'], Response::HTTP_OK);
     }
 
