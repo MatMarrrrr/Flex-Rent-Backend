@@ -15,7 +15,7 @@ class Message extends Model
     protected $fillable = [
         'chat_id',
         'sender_id',
-        'context',
+        'content',
     ];
 
     /**

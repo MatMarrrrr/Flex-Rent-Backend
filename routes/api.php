@@ -8,6 +8,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\RentalController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,4 +61,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/rentals', [RentalController::class, 'getRentals']);
 
     Route::get('/chats', [ChatController::class, 'getChats']);
+    
+    Route::prefix('messages')->group(function () {
+        Route::post('/', [MessageController::class, 'create']);
+        Route::get('/{chatId}', [MessageController::class, 'getByChatId'])->where('chatId', '[1-9][0-9]*');
+    });
 });
