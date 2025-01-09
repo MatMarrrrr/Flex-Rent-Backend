@@ -30,7 +30,9 @@ class ChatRepository
                             $query->select(['id', 'name']);
                         }]);
                 },
-                'messages',
+                'messages' => function ($query) {
+                    $query->with('sender');
+                },
             ])
             ->get()
             ->map(function ($chat) use ($userId) {

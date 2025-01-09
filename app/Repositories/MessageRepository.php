@@ -19,6 +19,7 @@ class MessageRepository
     public function getByChatId(int $chatId): Collection
     {
         return Message::where('chat_id', $chatId)
+            ->with('sender')
             ->orderBy('created_at', 'asc')
             ->get();
     }
