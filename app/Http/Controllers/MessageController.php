@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateMessageRequest;
 use App\Services\MessageService;
 use Illuminate\Http\JsonResponse;
+use App\Events\MessageSent;
 
 class MessageController extends Controller
 {
@@ -20,6 +21,8 @@ class MessageController extends Controller
         $message = $this->messageService->createMessage(
             $request->validated()
         );
+
+        broadcast(new MessageSent($message))->toOthers();
 
         return response()->json([
             'message' => $message
