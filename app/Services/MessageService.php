@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Message;
+use App\Events\MessageSent;
 use App\Repositories\MessageRepository;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 class MessageService
@@ -15,13 +16,23 @@ class MessageService
         $this->messageRepository = $messageRepository;
     }
 
-    public function createMessage(array $data): Message
+    public function createMessage(array $data): JsonResponse
     {
-        return $this->messageRepository->create($data);
+        $message = $this->messageRepository->create($data);
+
+        broadcast(new MessageSent($message))->toOthers();
+
+        return response()->json([
+            'message' => $message
+        ], 201);
     }
 
-    public function getMessagesByChatId(int $chatId): Collection
+    public function getMessagesByChatId(int $chatId): JsonResponse
     {
-        return $this->messageRepository->getByChatId($chatId);
+        $messages = $this->messageRepository->getByChatId($chatId);
+
+        return response()->json([
+            'messages' => $messages
+        ], 200);
     }
-} 
+}

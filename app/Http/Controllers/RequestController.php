@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Contracts\Services\RequestServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
+use App\Http\Requests\CheckRequestExistsRequest;
 use App\Http\Requests\CreateRequestRequest;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UpdateRequestPeriodRequest;
@@ -75,14 +76,9 @@ class RequestController extends Controller
         );
     }
 
-    public function checkExists(): JsonResponse
+    public function checkExists(CheckRequestExistsRequest $request): JsonResponse
     {
-        $data = [
-            'sender_id' => request()->query('sender_id'),
-            'recipient_id' => request()->query('recipient_id'),
-            'listing_id' => request()->query('listing_id'),
-        ];
-        
-        return $this->requestService->checkRequestExists($data);
+        $validatedData = $request->validated();
+        return $this->requestService->checkRequestExists($validatedData);
     }
 }

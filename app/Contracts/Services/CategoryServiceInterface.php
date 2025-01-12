@@ -2,6 +2,7 @@
 
 namespace App\Contracts\Services;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 
 interface CategoryServiceInterface
@@ -9,7 +10,7 @@ interface CategoryServiceInterface
     /**
      * Get all categories.
      *
-     * @return Collection
+     * @return JsonResponse
      */
-    public function getAllCategories(): Collection;
+    public function getAllCategories(): JsonResponse;
 }

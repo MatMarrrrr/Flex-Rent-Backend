@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Contracts\Services\CategoryServiceInterface;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
 class CategoryService implements CategoryServiceInterface
 {
@@ -15,8 +15,9 @@ class CategoryService implements CategoryServiceInterface
         $this->categoryRepository = $categoryRepository;
     }
 
-    public function getAllCategories(): Collection
+    public function getAllCategories(): JsonResponse
     {
-        return $this->categoryRepository->getAll();
+        $categories = $this->categoryRepository->getAll();
+        return response()->json($categories, 200);
     }
 }

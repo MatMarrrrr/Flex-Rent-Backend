@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\Services\RentalServiceInterface;
 use App\Contracts\Repositories\RentalRepositoryInterface;
 use App\Contracts\Services\UserServiceInterface;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Collection;
 
@@ -19,9 +20,11 @@ class RentalService implements RentalServiceInterface
         $this->userService = $userService;
     }
 
-    public function getUserRentals(): Collection
+    public function getUserRentals(): JsonResponse
     {
         $user = $this->userService->getCurrentUser();
-        return $this->rentalRepository->getUserRentals($user->id);
+        $rentals = $this->rentalRepository->getUserRentals($user->id);
+
+        return response()->json($rentals, 200);
     }
 }

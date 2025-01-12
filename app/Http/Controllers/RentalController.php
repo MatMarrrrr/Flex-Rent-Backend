@@ -17,7 +17,6 @@ class RentalController extends Controller
 
     public function getRentals(): JsonResponse
     {
-        $rentals = $this->rentalService->getUserRentals();
-        return response()->json($rentals);
+        return $this->rentalService->getUserRentals();
     }
 }

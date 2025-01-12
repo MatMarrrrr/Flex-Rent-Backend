@@ -1,9 +1,9 @@
 <?php
 
 namespace App\Contracts\Services;
-use Illuminate\Support\Collection;
+use Illuminate\Http\JsonResponse;
 
 interface RentalServiceInterface
 {
-    public function getUserRentals(): Collection;
+    public function getUserRentals(): JsonResponse;
 } 

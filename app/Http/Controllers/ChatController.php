@@ -2,23 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\ChatRepository;
+use App\Services\ChatService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    private ChatRepository $chatRepository;
+    private ChatService $chatService;
 
-    public function __construct(ChatRepository $chatRepository)
+    public function __construct(ChatService $chatService)
     {
-        $this->chatRepository = $chatRepository;
+        $this->chatService = $chatService;
     }
 
     public function getChats(): JsonResponse
     {
-        $userId = auth()->user()->id;
-        $chats = $this->chatRepository->getChats($userId);
-        return response()->json($chats);
+        return $this->chatService->getAllChats();
     }
 }

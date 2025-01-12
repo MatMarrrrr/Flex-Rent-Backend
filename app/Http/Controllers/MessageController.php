@@ -18,23 +18,12 @@ class MessageController extends Controller
 
     public function create(CreateMessageRequest $request): JsonResponse
     {
-        $message = $this->messageService->createMessage(
-            $request->validated()
-        );
-
-        broadcast(new MessageSent($message))->toOthers();
-
-        return response()->json([
-            'message' => $message
-        ], 201);
+        $validatedData = $request->validated();
+        return $this->messageService->createMessage($validatedData);
     }
 
     public function getByChatId(int $chatId): JsonResponse
     {
-        $messages = $this->messageService->getMessagesByChatId($chatId);
-
-        return response()->json([
-            'messages' => $messages
-        ]);
+        return $this->messageService->getMessagesByChatId($chatId);
     }
 }
