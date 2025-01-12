@@ -62,7 +62,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::prefix('chats')->group(function () {
         Route::get('/', [ChatController::class, 'getChats']);
-        Route::get('/{request_id}', [ChatController::class, 'getChatByRequestID']);
+        Route::get('request/{request_id}', [ChatController::class, 'getChatByRequestId']);
+        Route::get('rental/{rental_id}', [ChatController::class, 'getChatByRentalId']);
     });
 
     Route::prefix('messages')->group(function () {

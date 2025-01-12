@@ -27,7 +27,13 @@ class ChatService
 
     public function getChatByRequestID($request_id): JsonResponse
     {
-        $chat = $this->chatRepository->getByRequestID($request_id);
+        $chat = $this->chatRepository->getByRequestId($request_id);
+        return response()->json(["chat" => $chat], Response::HTTP_OK);
+    }
+
+    public function getChatByRentalID($rental_id): JsonResponse
+    {
+        $chat = $this->chatRepository->getByRentalId($rental_id);
         return response()->json(["chat" => $chat], Response::HTTP_OK);
     }
 }

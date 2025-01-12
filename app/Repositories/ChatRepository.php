@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Chat;
+use App\Models\Rental;
 use Illuminate\Support\Collection;
 
 class ChatRepository
@@ -52,8 +53,14 @@ class ChatRepository
             });
     }
 
-    public function getByRequestID($request_id): Collection
+    public function getByRequestId($request_id): ?Chat
     {
-        return Chat::where('request_id', $request_id)->get();
+        return Chat::where('request_id', $request_id)->first();
+    }
+
+    public function getByRentalId($rental_id): ?Chat
+    {
+        $rental = Rental::where('id', $rental_id)->first();
+        return Chat::where('request_id', $rental->request_id)->first();
     }
 }
