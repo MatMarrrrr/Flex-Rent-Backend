@@ -189,7 +189,10 @@ class RequestService implements RequestServiceInterface
             'recipient_id' => $data['recipient_id'],
             'listing_id' => $data['listing_id'],
         ])
-            ->whereIn('status', ['waiting', 'accepted'])
+            ->whereIn('status', [
+                RequestStatus::WAITING->value,
+                RequestStatus::ACCEPTED->value
+            ])
             ->first();
 
         if ($request) {

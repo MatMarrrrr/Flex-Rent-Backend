@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\ListingRepositoryInterface;
+use App\Enums\RequestStatus;
 use App\Models\Listing;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
@@ -67,7 +68,11 @@ class ListingRepository implements ListingRepositoryInterface
     public function getReservedPeriods(Listing $listing): array
     {
         return $listing->requests()
-            ->whereIn('status', ['waiting', 'accepted', 'confirmed'])
+            ->whereIn('status', [
+                RequestStatus::WAITING->value,
+                RequestStatus::ACCEPTED->value,
+                RequestStatus::CONFIRMED->value
+            ])
             ->where('end_date', '>=', Carbon::today())
             ->get()
             ->map(function ($request) {

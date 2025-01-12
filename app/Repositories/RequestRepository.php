@@ -3,10 +3,9 @@
 namespace App\Repositories;
 
 use App\Contracts\Repositories\RequestRepositoryInterface;
+use App\Enums\RequestStatus;
 use App\Models\Request;
-use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class RequestRepository implements RequestRepositoryInterface
 {
@@ -20,11 +19,11 @@ class RequestRepository implements RequestRepositoryInterface
         return Request::with('listing')
             ->where('recipient_id', $recipientId)
             ->orderByRaw("CASE status 
-                WHEN 'waiting' THEN 1 
-                WHEN 'accepted' THEN 2 
-                WHEN 'confirmed' THEN 3 
-                WHEN 'declined' THEN 4 
-                WHEN 'canceled' THEN 5 
+                WHEN '" . RequestStatus::WAITING->value . "' THEN 1 
+                WHEN '" . RequestStatus::ACCEPTED->value . "' THEN 2 
+                WHEN '" . RequestStatus::CONFIRMED->value . "' THEN 3 
+                WHEN '" . RequestStatus::DECLINED->value . "' THEN 4 
+                WHEN '" . RequestStatus::CANCELED->value . "' THEN 5 
                 END")
             ->orderBy('created_at', 'desc')
             ->get();
@@ -34,13 +33,13 @@ class RequestRepository implements RequestRepositoryInterface
     {
         return Request::with('listing')
             ->where('sender_id', $senderId)
-            ->where('status', '!=', 'confirmed')
+            ->where('status', '!=', RequestStatus::CONFIRMED->value)
             ->orderByRaw("CASE status 
-                WHEN 'waiting' THEN 1 
-                WHEN 'accepted' THEN 2 
-                WHEN 'confirmed' THEN 3 
-                WHEN 'declined' THEN 4 
-                WHEN 'canceled' THEN 5 
+                WHEN '" . RequestStatus::WAITING->value . "' THEN 1 
+                WHEN '" . RequestStatus::ACCEPTED->value . "' THEN 2 
+                WHEN '" . RequestStatus::CONFIRMED->value . "' THEN 3 
+                WHEN '" . RequestStatus::DECLINED->value . "' THEN 4 
+                WHEN '" . RequestStatus::CANCELED->value . "' THEN 5 
                 END")
             ->orderBy('created_at', 'desc')
             ->get();
