@@ -18,4 +18,9 @@ class ChatController extends Controller
     {
         return $this->chatService->getAllChats();
     }
+
+    public function getChatByRequestID($request_id): JsonResponse
+    {
+        return $this->chatService->getChatByRequestID($request_id);
+    }
 }

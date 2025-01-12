@@ -60,8 +60,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::get('/rentals', [RentalController::class, 'getRentals']);
 
-    Route::get('/chats', [ChatController::class, 'getChats']);
-    
+    Route::prefix('chats')->group(function () {
+        Route::get('/', [ChatController::class, 'getChats']);
+        Route::get('/{request_id}', [ChatController::class, 'getChatByRequestID']);
+    });
+
     Route::prefix('messages')->group(function () {
         Route::post('/', [MessageController::class, 'create']);
         Route::get('/{chatId}', [MessageController::class, 'getByChatId'])->where('chatId', '[1-9][0-9]*');

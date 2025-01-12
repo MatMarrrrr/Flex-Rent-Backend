@@ -24,4 +24,10 @@ class ChatService
         $categories = $this->chatRepository->getChats($user->id);
         return response()->json($categories, Response::HTTP_OK);
     }
+
+    public function getChatByRequestID($request_id): JsonResponse
+    {
+        $chat = $this->chatRepository->getByRequestID($request_id);
+        return response()->json($chat, Response::HTTP_OK);
+    }
 }

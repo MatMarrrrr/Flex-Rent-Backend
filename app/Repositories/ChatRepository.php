@@ -51,4 +51,9 @@ class ChatRepository
                 return $chat;
             });
     }
+
+    public function getByRequestID($request_id): Collection
+    {
+        return Chat::where('request_id', $request_id)->get();
+    }
 }
