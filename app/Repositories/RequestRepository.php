@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\ListingRepositoryInterface;
 use App\Contracts\Repositories\RequestRepositoryInterface;
 use App\Enums\RequestStatus;
 use App\Models\Request;
@@ -9,6 +10,13 @@ use Illuminate\Support\Collection;
 
 class RequestRepository implements RequestRepositoryInterface
 {
+    private ListingRepositoryInterface $listingRepository;
+
+    public function __construct(ListingRepositoryInterface $listingRepository)
+    {
+        $this->listingRepository = $listingRepository;
+    }
+
     public function create(array $data): Request
     {
         return Request::create($data);
@@ -31,7 +39,7 @@ class RequestRepository implements RequestRepositoryInterface
 
     public function getOutgoing(int $senderId): Collection
     {
-        return Request::with('listing')
+        $requests = Request::with('listing')
             ->where('sender_id', $senderId)
             ->where('status', '!=', RequestStatus::CONFIRMED->value)
             ->orderByRaw("CASE status 
@@ -43,6 +51,14 @@ class RequestRepository implements RequestRepositoryInterface
                 END")
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $requests->each(function ($request) {
+            if ($request->listing) {
+                $this->listingRepository->appendReservedPeriods($request->listing);
+            }
+        });
+
+        return $requests;
     }
 
     public function findRequestById(int $requestId): ?Request
