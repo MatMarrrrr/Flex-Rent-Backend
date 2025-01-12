@@ -44,12 +44,12 @@ class UserService implements UserServiceInterface
             return response()->json([
                 'message' => 'User data updated successfully',
                 'updated_data' => $validatedData
-            ], 200);
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
             'message' => 'Failed to update user in the database',
-        ], 500);
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function updateUserProfileImage(UploadedFile $validatedFile): JsonResponse
@@ -59,7 +59,7 @@ class UserService implements UserServiceInterface
         if (!$uploadResponse['success']) {
             return response()->json([
                 'message' => $uploadResponse['error'] ?? 'Image upload failed',
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $user = $this->getCurrentUser();
@@ -71,11 +71,11 @@ class UserService implements UserServiceInterface
             return response()->json([
                 'message' => 'Profile image updated successfully',
                 'image_url' => $updatedUser->profile_image
-            ], 200);
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
             'message' => 'Failed to update profile image in the database',
-        ], 500);
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

@@ -6,6 +6,7 @@ use App\Contracts\Repositories\ListingRepositoryInterface;
 use App\Contracts\Services\ImgurServiceInterface;
 use App\Contracts\Services\ListingServiceInterface;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class ListingService implements ListingServiceInterface
 {
@@ -27,7 +28,7 @@ class ListingService implements ListingServiceInterface
         if (!$uploadResponse['success']) {
             return response()->json([
                 'message' => $uploadResponse['error'] ?? 'Image upload failed',
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $data['image'] = $uploadResponse['link'];
@@ -38,12 +39,12 @@ class ListingService implements ListingServiceInterface
             return response()->json([
                 'message' => 'Listing created successfully',
                 'listing' => $listing,
-            ], 200);
+            ], Response::HTTP_CREATED);
         }
 
         return response()->json([
             'message' => 'Failed to create listing',
-        ], 500);
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function updateListing(int $listingId, array $data, int $userId): JsonResponse
@@ -51,7 +52,7 @@ class ListingService implements ListingServiceInterface
         $listing = $this->listingRepository->findByIdAndOwner($listingId, $userId);
 
         if (!$listing) {
-            return response()->json(['message' => 'Listing not found or you are not the owner'], 403);
+            return response()->json(['message' => 'Listing not found or you are not the owner'], Response::HTTP_FORBIDDEN);
         }
 
         $updatedListing = $this->listingRepository->update($listingId, $data);
@@ -59,12 +60,12 @@ class ListingService implements ListingServiceInterface
         if ($updatedListing) {
             return response()->json([
                 'message' => 'Listing updated successfully',
-            ], 200);
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
             'message' => 'Failed to update listing',
-        ], 500);
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     public function updateListingImage(int $listingId, array $data, int $userId): JsonResponse
@@ -72,7 +73,7 @@ class ListingService implements ListingServiceInterface
         $listing = $this->listingRepository->findByIdAndOwner($listingId, $userId);
 
         if (!$listing) {
-            return response()->json(['message' => 'Listing not found or you are not the owner'], 403);
+            return response()->json(['message' => 'Listing not found or you are not the owner'], Response::HTTP_FORBIDDEN);
         }
 
         $uploadResponse = $this->imgurService->uploadImage($data['image']);
@@ -80,7 +81,7 @@ class ListingService implements ListingServiceInterface
         if (!$uploadResponse['success']) {
             return response()->json([
                 'message' => $uploadResponse['error'] ?? 'Image upload failed',
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
 
         $updatedListing = $this->listingRepository->update($listingId, ['image' => $uploadResponse['link']]);
@@ -88,21 +89,20 @@ class ListingService implements ListingServiceInterface
         if ($updatedListing) {
             return response()->json([
                 'message' => 'Listing image updated successfully',
-            ], 200);
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
             'message' => 'Failed to update listing image',
-        ], 500);
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
-
 
     public function searchListings(array $filters): JsonResponse
     {
         $results = $this->listingRepository->search($filters);
         $results = $this->listingRepository->appendReservedPeriods($results);
 
-        return response()->json(['results' => $results], 200);
+        return response()->json(['results' => $results], Response::HTTP_OK);
     }
 
     public function getListingById(int $listingId): JsonResponse
@@ -110,11 +110,11 @@ class ListingService implements ListingServiceInterface
         $listing = $this->listingRepository->findById($listingId);
 
         if (!$listing) {
-            return response()->json(['message' => 'Listing not found'], 404);
+            return response()->json(['message' => 'Listing not found'], Response::HTTP_NOT_FOUND);
         }
         $listing = $this->listingRepository->appendReservedPeriods($listing);
 
-        return response()->json($listing, 200);
+        return response()->json($listing, Response::HTTP_OK);
     }
 
     public function getListingByIdAndOwner(int $listingId, int $userId): JsonResponse
@@ -122,18 +122,17 @@ class ListingService implements ListingServiceInterface
         $listing = $this->listingRepository->findByIdAndOwner($listingId, $userId);
 
         if (!$listing) {
-            return response()->json(['message' => 'Listing not found or you are not the owner'], 403);
+            return response()->json(['message' => 'Listing not found or you are not the owner'], Response::HTTP_FORBIDDEN);
         }
 
-        return response()->json($listing, 200);
+        return response()->json($listing, Response::HTTP_OK);
     }
-
 
     public function getListingsByOwner(int $ownerId): JsonResponse
     {
         $listings = $this->listingRepository->getByOwner($ownerId);
         $listings = $this->listingRepository->appendReservedPeriods($listings);
-        return response()->json($listings, 200);
+        return response()->json($listings, Response::HTTP_OK);
     }
 
     public function deleteListing(int $listingId, int $userId): JsonResponse
@@ -141,15 +140,15 @@ class ListingService implements ListingServiceInterface
         $listing = $this->listingRepository->findByIdAndOwner($listingId, $userId);
 
         if (!$listing) {
-            return response()->json(['message' => 'Listing not found or you are not the owner'], 403);
+            return response()->json(['message' => 'Listing not found or you are not the owner'], Response::HTTP_FORBIDDEN);
         }
 
         $markedAsDeleted = $this->listingRepository->markAsDeleted($listingId);
 
         if ($markedAsDeleted) {
-            return response()->json(['message' => 'Listing marked as deleted successfully'], 200);
+            return response()->json(['message' => 'Listing marked as deleted successfully'], Response::HTTP_OK);
         }
 
-        return response()->json(['message' => 'Failed to mark listing as deleted'], 500);
+        return response()->json(['message' => 'Failed to mark listing as deleted'], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }

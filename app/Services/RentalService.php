@@ -6,8 +6,7 @@ use App\Contracts\Services\RentalServiceInterface;
 use App\Contracts\Repositories\RentalRepositoryInterface;
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
 
 class RentalService implements RentalServiceInterface
 {
@@ -25,6 +24,6 @@ class RentalService implements RentalServiceInterface
         $user = $this->userService->getCurrentUser();
         $rentals = $this->rentalRepository->getUserRentals($user->id);
 
-        return response()->json($rentals, 200);
+        return response()->json($rentals, Response::HTTP_OK);
     }
 }

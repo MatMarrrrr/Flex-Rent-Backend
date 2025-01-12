@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\Services\CategoryServiceInterface;
 use App\Contracts\Repositories\CategoryRepositoryInterface;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class CategoryService implements CategoryServiceInterface
 {
@@ -18,6 +19,6 @@ class CategoryService implements CategoryServiceInterface
     public function getAllCategories(): JsonResponse
     {
         $categories = $this->categoryRepository->getAll();
-        return response()->json($categories, 200);
+        return response()->json($categories, Response::HTTP_OK);
     }
 }

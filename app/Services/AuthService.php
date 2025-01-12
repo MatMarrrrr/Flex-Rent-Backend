@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Contracts\Repositories\UserRepositoryInterface;
 use App\Contracts\Services\AuthServiceInterface;
-use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthService implements AuthServiceInterface
 {
@@ -47,12 +47,12 @@ class AuthService implements AuthServiceInterface
             return response()->json([
                 'user' => $user,
                 'token' => $token,
-            ], 200);
+            ], Response::HTTP_OK);
         }
 
         return response()->json([
             'message' => 'Nieprawidłowe dane logowania',
-        ], 401);
+        ], Response::HTTP_UNAUTHORIZED);
     }
 
     public function logoutUser(): JsonResponse
@@ -63,6 +63,6 @@ class AuthService implements AuthServiceInterface
 
         return response()->json([
             'message' => 'Wylogowano pomyślnie',
-        ], 200);
+        ], Response::HTTP_OK);
     }
 }

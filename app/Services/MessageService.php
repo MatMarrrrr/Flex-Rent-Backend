@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Events\MessageSent;
 use App\Repositories\MessageRepository;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Collection;
+use Symfony\Component\HttpFoundation\Response;
 
 class MessageService
 {
@@ -24,7 +24,7 @@ class MessageService
 
         return response()->json([
             'message' => $message
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 
     public function getMessagesByChatId(int $chatId): JsonResponse
@@ -33,6 +33,6 @@ class MessageService
 
         return response()->json([
             'messages' => $messages
-        ], 200);
+        ], Response::HTTP_OK);
     }
 }
