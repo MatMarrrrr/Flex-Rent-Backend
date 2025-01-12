@@ -28,6 +28,6 @@ class ChatService
     public function getChatByRequestID($request_id): JsonResponse
     {
         $chat = $this->chatRepository->getByRequestID($request_id);
-        return response()->json($chat, Response::HTTP_OK);
+        return response()->json(["chat" => $chat], Response::HTTP_OK);
     }
 }
