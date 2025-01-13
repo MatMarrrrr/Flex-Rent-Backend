@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\Services\MessageServiceInterface;
 use App\Http\Requests\CreateMessageRequest;
-use App\Services\MessageService;
 use Illuminate\Http\JsonResponse;
-use App\Events\MessageSent;
 
 class MessageController extends Controller
 {
-    private MessageService $messageService;
+    private MessageServiceInterface $messageService;
 
-    public function __construct(MessageService $messageService)
+    public function __construct(MessageServiceInterface $messageService)
     {
         $this->messageService = $messageService;
     }

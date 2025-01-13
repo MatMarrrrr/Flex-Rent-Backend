@@ -2,11 +2,12 @@
 
 namespace App\Repositories;
 
+use App\Contracts\Repositories\ChatRepositoryInterface;
 use App\Models\Chat;
 use App\Models\Rental;
 use Illuminate\Support\Collection;
 
-class ChatRepository
+class ChatRepository implements ChatRepositoryInterface
 {
     public function create(array $data): Chat
     {

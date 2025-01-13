@@ -2,16 +2,17 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\MessageRepositoryInterface;
+use App\Contracts\Services\MessageServiceInterface;
 use App\Events\MessageSent;
-use App\Repositories\MessageRepository;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class MessageService
+class MessageService implements MessageServiceInterface
 {
-    private MessageRepository $messageRepository;
+    private MessageRepositoryInterface $messageRepository;
 
-    public function __construct(MessageRepository $messageRepository)
+    public function __construct(MessageRepositoryInterface $messageRepository)
     {
         $this->messageRepository = $messageRepository;
     }

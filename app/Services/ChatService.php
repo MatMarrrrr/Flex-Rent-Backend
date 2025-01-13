@@ -2,18 +2,21 @@
 
 namespace App\Services;
 
+use App\Contracts\Repositories\ChatRepositoryInterface;
+use App\Contracts\Services\ChatServiceInterface;
 use App\Contracts\Services\UserServiceInterface;
-use App\Repositories\ChatRepository;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
-class ChatService
+class ChatService implements ChatServiceInterface
 {
-    protected ChatRepository $chatRepository;
+    protected ChatRepositoryInterface $chatRepository;
     protected UserServiceInterface $userService;
 
-    public function __construct(ChatRepository $chatRepository, UserServiceInterface $userService)
-    {
+    public function __construct(
+        ChatRepositoryInterface $chatRepository,
+        UserServiceInterface $userService
+    ) {
         $this->chatRepository = $chatRepository;
         $this->userService = $userService;
     }

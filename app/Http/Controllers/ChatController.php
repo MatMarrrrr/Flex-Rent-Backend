@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ChatService;
+use App\Contracts\Services\ChatServiceInterface;
 use Illuminate\Http\JsonResponse;
 
 class ChatController extends Controller
 {
-    private ChatService $chatService;
+    private ChatServiceInterface $chatService;
 
-    public function __construct(ChatService $chatService)
+    public function __construct(ChatServiceInterface $chatService)
     {
         $this->chatService = $chatService;
     }
