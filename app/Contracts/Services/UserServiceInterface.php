@@ -38,4 +38,6 @@ interface UserServiceInterface
      * @return JsonResponse
      */
     public function updateUserProfileImage(UploadedFile $validatedFile): JsonResponse;
+
+    public function updateUserPassword(string $password): JsonResponse;
 }

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Contracts\Services\UserServiceInterface;
 use Illuminate\Http\JsonResponse;
 use App\Http\Requests\UserRequest;
-use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\ProfileImageRequest;
+use App\Http\Requests\ChangePasswordRequest;
 
 class UserController extends Controller
 {
@@ -39,5 +39,12 @@ class UserController extends Controller
         $validatedData = $request->validated();
         $profileImage = $validatedData['profile_image'];
         return $this->userService->updateUserProfileImage($profileImage);
+    }
+
+    public function updatePassword(ChangePasswordRequest $request): JsonResponse
+    {
+        $validatedData = $request->validated();
+        $password = $validatedData['new_password'];
+        return $this->userService->updateUserPassword($password);
     }
 }

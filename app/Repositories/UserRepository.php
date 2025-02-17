@@ -26,4 +26,15 @@ class UserRepository implements UserRepositoryInterface
 
         return null;
     }
+
+    public function updatePassword(int $userId, string $password): bool
+    {
+        $user = User::find($userId);
+        if (!$user) {
+            return false;
+        }
+
+        $user->password = $password;
+        return $user->save();
+    }
 }

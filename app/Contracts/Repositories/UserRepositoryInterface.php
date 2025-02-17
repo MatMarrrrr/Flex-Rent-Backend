@@ -9,4 +9,5 @@ interface UserRepositoryInterface
     public function createUser(array $data): User;
     public function emailExists(string $email): bool;
     public function updateUser(int $userId, array $data): ?User;
+    public function updatePassword(int $userId, string $password): bool;
 }

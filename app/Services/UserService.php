@@ -78,4 +78,20 @@ class UserService implements UserServiceInterface
             'message' => 'Failed to update profile image in the database',
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+
+    public function updateUserPassword(string $password): JsonResponse
+    {
+        $user = $this->getCurrentUser();
+        $updatedPassword = $this->userRepository->updatePassword($user->id, $password);
+
+        if ($updatedPassword) {
+            return response()->json([
+                'message' => 'Password updated successfully',
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'message' => 'Failed to update password in the database',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
 }
